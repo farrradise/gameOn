@@ -9,61 +9,44 @@ let numberOfParticipation = document.getElementById('quantity');
 let submitBtn = document.querySelector(".btn-submit");
 let successMessage = '<div class="success"> <p> Merci ! <br> Votre réservation a été reçue.</p> <div class="btn-submit">Fermer</div></div>'
 
-// Ajout évenement au click sur le bouton submit du modal
+
+
+// Add Event on click on form submission
 submitBtn.addEventListener('click', (e)=> {
     e.preventDefault();
     displaySubmissionMessage();
 });
 
-// Ecoute des changements sur les inputs en temps réel et vérification des données entrées
-firstName.addEventListener('input', (e) => {
-    let result = checkName(e.target.value);
-    displayErrorMessage(result, e.target);
-    checkForm();
-});
-
-lastName.addEventListener('input', (e) => {
-    let result = checkName(e.target.value);
-    displayErrorMessage(result, e.target);
-    checkForm();
-});
-
-email.addEventListener('input', (e) => {
-    let result = checkEmail(e.target.value);
-    displayErrorMessage(result, e.target);
-    checkForm();
-});
-
-cities.forEach((city) => city.addEventListener("input", (e) => {
-    let result = checkCity(cities);  
-    displayErrorMessage(result, e.target);
-    checkForm();
-}));
-
-birthDate.addEventListener('input', (e) => {
-    let result = checkMajority(e.target.value);
-    displayErrorMessage(result, e.target);
-    checkForm();
-});
-
-legal.addEventListener('input', (e)=> {
-    let result = e.target.checked;
-    displayErrorMessage(result, e.target);
-    checkForm();
-
-});
-
-numberOfParticipation.addEventListener('input', (e) => {
-    let result = checkGamesNb(e.target.value);
-    displayErrorMessage(result, e.target);
-    checkForm();
-});
 
 
-// refactorisation 
+
+// Listen to all changes in form inputs
 document.addEventListener('input', (e)=> {
-// trouver le type de fonction à lancer 
+    
+    let result;
 
+    if (e.target.id == "first" || e.target.id == "last"  ) {
+        result = checkName(e.target.value);
+    } else if (e.target.id == "email") {
+        result = checkEmail(e.target.value);
+    } else if (e.target.id == "birthdate") {
+        result = checkMajority(e.target.value);
+    } else if (e.target.id == "quantity") {
+        result = checkGamesNb(e.target.value);
+    } else if (e.target.name == "location") {
+        result = checkCity(cities);
+    } else if (e.target.id == "checkbox1") {
+        result = e.target.checked;
+    }
+
+
+    // console.log("l'input renvoie la valeur ", result);
+   
+    // display error message if necessary
+    displayErrorMessage(result, e.target);
+
+    // check whole form in order to know whether displaying submit button or not
+    checkForm();
 });
 
 
@@ -112,7 +95,6 @@ function checkMajority(birthDate) {
     if (majorityDate < today) {
         return true;
     } else {
-        // console.log('retourne info pas encore majeur');
         return false;
     }
 
@@ -128,8 +110,6 @@ function checkCity(cities) {
         } 
     });
     
-    console.log(isChecked);
-    // if (isChecked > 0) { return true } else { return false;}
     return isChecked > 0 ? true : false;
 }
 
@@ -172,7 +152,7 @@ function displayErrorMessage(validation, element) {
 function displaySubmissionMessage() {
     document.querySelector('.modal-body').innerHTML = successMessage;
 
-    // comportement du bouton fermer identique à la X du modal
+    // behavior to allow closing modal on click on "fermer" button (trigger X button)
     document.querySelector('.modal-body .success .btn-submit').addEventListener('click', (e)=> {
         closeBtn.click()
     });
