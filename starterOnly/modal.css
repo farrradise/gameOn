@@ -333,6 +333,13 @@ input[data-error]::after {
   cursor: pointer;
   border: 0;
 }
+
+.btn-submit[disabled] {
+  background: #6e1923;
+  cursor: default;
+  color : rgb(155, 155, 155);
+}
+
 /* custom select styles */
 .custom-select {
   position: relative;
