@@ -185,7 +185,33 @@ main {
 
 .modal-body {
   padding: 15px 8%;
+  min-height : 100vh;
   margin: 15px auto;
+}
+
+.success {
+  margin : auto;
+  /* border : 1px solid red; */
+  display : flex;
+  flex-flow : column nowrap;
+  height : 80vh;
+  position :relative;
+}
+
+.success p {
+  margin : auto;
+  text-align: center;
+  line-height : 3rem;
+  padding : 50% 0;
+  font-size : 30px;
+  font-weight :lighter;
+}
+
+.success .btn-submit {
+  position :absolute;
+  bottom : -15%;
+  left : 50%;
+  transform : translateX(-50%);
 }
 
 label {

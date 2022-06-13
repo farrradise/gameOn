@@ -7,52 +7,63 @@ let lastName = document.getElementById('last');
 let legal = document.getElementById('checkbox1');
 let numberOfParticipation = document.getElementById('quantity'); 
 let submitBtn = document.querySelector(".btn-submit");
-
-
+let successMessage = '<div class="success"> <p> Merci ! <br> Votre réservation a été reçue.</p> <div class="btn-submit">Fermer</div></div>'
 
 // Ajout évenement au click sur le bouton submit du modal
-// submitBtn.addEventListener('click', checkForm);
 submitBtn.addEventListener('click', (e)=> {
-    alert('ça clique');
+    e.preventDefault();
+    displaySubmissionMessage();
 });
 
 // Ecoute des changements sur les inputs en temps réel et vérification des données entrées
 firstName.addEventListener('input', (e) => {
     let result = checkName(e.target.value);
-    
-    // console.log("c'est le résultat : ",result);
-    return result;
+    displayErrorMessage(result, e.target);
+    checkForm();
 });
 
 lastName.addEventListener('input', (e) => {
     let result = checkName(e.target.value);
     displayErrorMessage(result, e.target);
+    checkForm();
 });
 
 email.addEventListener('input', (e) => {
     let result = checkEmail(e.target.value);
     displayErrorMessage(result, e.target);
+    checkForm();
 });
 
 cities.forEach((city) => city.addEventListener("input", (e) => {
     let result = checkCity(cities);  
     displayErrorMessage(result, e.target);
+    checkForm();
 }));
 
 birthDate.addEventListener('input', (e) => {
     let result = checkMajority(e.target.value);
     displayErrorMessage(result, e.target);
+    checkForm();
 });
 
 legal.addEventListener('input', (e)=> {
     let result = e.target.checked;
     displayErrorMessage(result, e.target);
     checkForm();
+
 });
 
 numberOfParticipation.addEventListener('input', (e) => {
     let result = checkGamesNb(e.target.value);
     displayErrorMessage(result, e.target);
+    checkForm();
+});
+
+
+// refactorisation 
+document.addEventListener('input', (e)=> {
+// trouver le type de fonction à lancer 
+
 });
 
 
@@ -62,7 +73,6 @@ numberOfParticipation.addEventListener('input', (e) => {
 
 
 
-// checkAllInputs();
 
 function allowSubmitBtn(autorisation) {
 
@@ -73,12 +83,9 @@ function allowSubmitBtn(autorisation) {
     }
 }
 
-// On revérifie l'ensemble des données renseignées
 function checkForm() {
     // e.preventDefault();
-
-    // const elementsToCheck = [firstName.value, lastName.value, email.value, birthDate.value, numberOfParticipation.value ];
-console.log(checkName(firstName.value));
+    
     if (checkName(firstName.value) && 
     checkName(lastName.value) && 
     checkEmail(email.value) && 
@@ -86,16 +93,10 @@ console.log(checkName(firstName.value));
     checkGamesNb(numberOfParticipation.value) && 
     checkCity(cities) &&
     legal.checked) {
-
         allowSubmitBtn(true); 
 
     } else {
-        allowSubmitBtn(false);
-
-        // if (!checkName(firstName.value)){
-            // displayErrorMessage(false, firstName);
-        // }
- 
+        allowSubmitBtn(false); 
     }
    
 
@@ -162,15 +163,19 @@ function checkName(name) {
 
 function displayErrorMessage(validation, element) {
     if (validation) {
-        // console.log('this is gooute');
         element.closest('.formData').setAttribute("data-error-visible", false);
-        // checkAllInputs();
-        // event.target.
     } else {
         element.closest('.formData').setAttribute("data-error-visible", true);
-        // console.log('this is NOT gooute');
-        // event.target.closest('.formData').setAttribute("data-error-visible", true);
     }
+}
+
+function displaySubmissionMessage() {
+    document.querySelector('.modal-body').innerHTML = successMessage;
+
+    // comportement du bouton fermer identique à la X du modal
+    document.querySelector('.modal-body .success .btn-submit').addEventListener('click', (e)=> {
+        closeBtn.click()
+    });
 }
 
 
