@@ -15,44 +15,44 @@ let successMessage = '<div class="success"> <p> Merci ! <br> Votre réservation 
 // Listen to all changes in form inputs
 firstName.addEventListener('input', (e) => {
     let result = checkName(e.target.value);
-    displayErrorMessage(result, e.target);
+    toggleErrorMessage(result, e.target);
     checkForm();
 });
 
 lastName.addEventListener('input', (e) => {
     let result = checkName(e.target.value);
-    displayErrorMessage(result, e.target);
+    toggleErrorMessage(result, e.target);
     checkForm();
 });
 
 email.addEventListener('input', (e) => {
     let result = checkEmail(e.target.value);
-    displayErrorMessage(result, e.target);
+    toggleErrorMessage(result, e.target);
     checkForm();
 });
 
 cities.forEach((city) => city.addEventListener("input", (e) => {
     let result = checkCity(cities);  
-    displayErrorMessage(result, e.target);
+    toggleErrorMessage(result, e.target);
     checkForm();
 }));
 
-birthDate.addEventListener('input', (e) => {
+birthDate.addEventListener('blur', (e) => {
     let result = checkMajority(e.target.value);
-    displayErrorMessage(result, e.target);
+    toggleErrorMessage(result, e.target);
     checkForm();
 });
 
 legal.addEventListener('input', (e)=> {
     let result = e.target.checked;
-    displayErrorMessage(result, e.target);
+    toggleErrorMessage(result, e.target);
     checkForm();
 
 });
 
 numberOfParticipation.addEventListener('input', (e) => {
     let result = checkGamesNb(e.target.value);
-    displayErrorMessage(result, e.target);
+    toggleErrorMessage(result, e.target);
     checkForm();
 });
 
@@ -114,14 +114,15 @@ function checkMajority(birthDate) {
 
     let majorityDate = new Date(birthDate.getFullYear() + 18, birthDate.getMonth(), birthDate.getDate());
     
-    if (majorityDate < today) {
-        return true;
-    } else {
+    if (majorityDate > today) {
         return false;
     }
 
+    return true;
+
 }
 
+// MODIF A FAIRE
 function checkCity(cities) {
 
     let isChecked = 0;
@@ -135,35 +136,37 @@ function checkCity(cities) {
     return isChecked > 0 ? true : false;
 }
 
-function checkEmail(email) {
-    const regex = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
 
-    if (email && regex.test(email)) {
-        return true;
-    } else {
+
+function checkEmail(email) {
+    // const regex = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+    const regex = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,8}$/);
+    if (!email || !regex.test(email)) {
         return false;
     }
+
+    return true;
 }
 
 function checkGamesNb(quantity) {
-    if (!isNaN(parseInt(quantity, 10))) {
-        return true;
-    } else {
-        return false;
-    }
+    quantity = Number(quantity);
 
+    if (isNaN(quantity) || quantity < 0) {
+        return false;
+    } 
+
+    return true;
 }
 
 function checkName(name) {
     const regex = new RegExp('[a-zA-Z]{2,}');
-    if (name && regex.test(name) ) {
-        return true;
-    } else {
+    if (!name || !regex.test(name) ) {
         return false;
-    }
+    } 
+    return true;
 }
 
-function displayErrorMessage(validation, element) {
+function toggleErrorMessage(validation, element) {
     if (validation) {
         element.closest('.formData').setAttribute("data-error-visible", false);
     } else {
