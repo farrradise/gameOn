@@ -11,6 +11,52 @@ let successMessage = '<div class="success"> <p> Merci ! <br> Votre réservation 
 
 
 
+
+// Listen to all changes in form inputs
+firstName.addEventListener('input', (e) => {
+    let result = checkName(e.target.value);
+    displayErrorMessage(result, e.target);
+    checkForm();
+});
+
+lastName.addEventListener('input', (e) => {
+    let result = checkName(e.target.value);
+    displayErrorMessage(result, e.target);
+    checkForm();
+});
+
+email.addEventListener('input', (e) => {
+    let result = checkEmail(e.target.value);
+    displayErrorMessage(result, e.target);
+    checkForm();
+});
+
+cities.forEach((city) => city.addEventListener("input", (e) => {
+    let result = checkCity(cities);  
+    displayErrorMessage(result, e.target);
+    checkForm();
+}));
+
+birthDate.addEventListener('input', (e) => {
+    let result = checkMajority(e.target.value);
+    displayErrorMessage(result, e.target);
+    checkForm();
+});
+
+legal.addEventListener('input', (e)=> {
+    let result = e.target.checked;
+    displayErrorMessage(result, e.target);
+    checkForm();
+
+});
+
+numberOfParticipation.addEventListener('input', (e) => {
+    let result = checkGamesNb(e.target.value);
+    displayErrorMessage(result, e.target);
+    checkForm();
+});
+
+
 // Add Event on click on form submission
 submitBtn.addEventListener('click', (e)=> {
     e.preventDefault();
@@ -20,35 +66,11 @@ submitBtn.addEventListener('click', (e)=> {
 
 
 
-// Listen to all changes in form inputs
-document.addEventListener('input', (e)=> {
-    
-    let result;
-
-    if (e.target.id == "first" || e.target.id == "last"  ) {
-        result = checkName(e.target.value);
-    } else if (e.target.id == "email") {
-        result = checkEmail(e.target.value);
-    } else if (e.target.id == "birthdate") {
-        result = checkMajority(e.target.value);
-    } else if (e.target.id == "quantity") {
-        result = checkGamesNb(e.target.value);
-    } else if (e.target.name == "location") {
-        result = checkCity(cities);
-    } else if (e.target.id == "checkbox1") {
-        result = e.target.checked;
-    }
-
-
-    // console.log("l'input renvoie la valeur ", result);
-   
-    // display error message if necessary
-    displayErrorMessage(result, e.target);
-
-    // check whole form in order to know whether displaying submit button or not
-    checkForm();
-});
-
+// return String(email)
+// .toLowerCase()
+// .match(
+//   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+// );
 
 
 
