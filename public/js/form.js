@@ -5,6 +5,7 @@ let email = document.getElementById('email');
 let firstName = document.getElementById('first'); 
 let lastName = document.getElementById('last'); 
 let legal = document.getElementById('checkbox1');
+let promotion = document.getElementById('checkbox2');
 let numberOfParticipation = document.getElementById('quantity'); 
 let submitBtn = document.querySelector(".btn-submit");
 let successMessage = '<div class="success"> <p> Merci ! <br> Votre réservation a été reçue.</p> <div class="btn-submit">Fermer</div></div>'
@@ -63,6 +64,25 @@ submitBtn.addEventListener('click', (e)=> {
 
     if (checkCity(cities)) {
         displaySubmissionMessage();
+        console.log('Bravo vous êtes enregistré.e, voici un récapitulatif de vos infos : ');
+        console.log('Nom :', lastName.value);
+        console.log('Prénom :', firstName.value);
+        console.log('Email :', email.value);
+        console.log('Date de naissance :', birthDate.value);
+        console.log('Vous avez déjà participé à', numberOfParticipation.value,'tournois GameOn');
+
+        if (promotion.checked) {
+            console.log("Vous souhaitez être averti.e des prochains évènements");
+        } else {
+            console.log("Vous ne souhaitez pas être averti.e des prochains évènements");
+        }
+
+        cities.forEach(function (ville) {
+            if (ville.checked) {
+                return console.log("Vous avez choisi de participer au tournoi de", ville.value);
+            }
+        });
+
     } else {
         toggleErrorMessage(false, cities[0]);
     }
@@ -79,18 +99,15 @@ function allowSubmitBtn(autorisation) {
 
     if (autorisation) {
         submitBtn.disabled = false;
-        console.log('Bravo vous êtes enregistré, voici un récapitulatif de vos infos : ');
-        console.log('Votre nom ; ', lastName.value);
-        console.log('Votre nom ; ', lastName.value);
+
     } else {
         submitBtn.disabled = true;
     }
 }
 
+// check all input from form except cities in order to display submit button
 function checkForm() {
     // e.preventDefault();
-    // checkCity(cities) &&
-    // console.log('je check la majorité', checkMajority(numberOfParticipation.value));
 
 
     if (checkName(firstName.value) && 
@@ -106,6 +123,7 @@ function checkForm() {
    
 
 }
+
 
 function checkMajority(birthDate) {
     
@@ -148,7 +166,6 @@ function checkEmail(email) {
     return true;
 }
 
-// Modif à faire
 function checkGamesNb(quantity) {
 
     if (!quantity) {
@@ -173,14 +190,6 @@ function checkName(name) {
     return true;
 }
 
-function toggleErrorMessage(validation, element) {
-    if (validation) {
-        element.closest('.formData').setAttribute("data-error-visible", false);
-    } else {
-        element.closest('.formData').setAttribute("data-error-visible", true);
-    }
-}
-
 function displaySubmissionMessage() {
     document.querySelector('.modal-body').innerHTML = successMessage;
 
@@ -189,6 +198,16 @@ function displaySubmissionMessage() {
         closeBtn.click()
     });
 }
+
+function toggleErrorMessage(validation, element) {
+    if (validation) {
+        element.closest('.formData').setAttribute("data-error-visible", false);
+    } else {
+        element.closest('.formData').setAttribute("data-error-visible", true);
+    }
+}
+
+
 
 
 
